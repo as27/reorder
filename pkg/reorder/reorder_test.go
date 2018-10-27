@@ -75,6 +75,24 @@ func TestRun(t *testing.T) {
 				{"1036_c.txt", "030_c.txt"},
 			},
 		},
+		{
+			"folder",
+			args{
+				makeTestFiler([]string{
+					"034_ab",
+					"035_bc",
+					"036_cd",
+				}),
+				10,
+				3,
+			},
+			false,
+			[]testRename{
+				{"034_ab", "010_ab"},
+				{"035_bc", "020_bc"},
+				{"036_cd", "030_cd"},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -105,7 +123,7 @@ type testRename struct {
 	old, new string
 }
 
-func (tf *testFiler) GetFiles() []string {
+func (tf *testFiler) GetElements() []string {
 	return tf.files
 }
 
