@@ -51,15 +51,15 @@ func (f Filer) GetElements() []string {
 				continue
 			}
 		}
-		elements = append(elements, fi.Name())
+		elements = append(elements, filepath.Base(fi.Name()))
 	}
-	return []string{}
+	return elements
 }
 
 // Rename let you rename a folder or file
 func (f Filer) Rename(old, new string) error {
 	return os.Rename(
-		filepath.Join(f.fpath, old),
-		filepath.Join(f.fpath, new),
+		filepath.Join(f.fpath, filepath.Base(old)),
+		filepath.Join(f.fpath, filepath.Base(new)),
 	)
 }
