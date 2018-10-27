@@ -36,6 +36,45 @@ func TestRun(t *testing.T) {
 				{"036_c.txt", "030_c.txt"},
 			},
 		},
+		{
+			"some other files",
+			args{
+				makeTestFiler([]string{
+					"034_a.txt",
+					"abc.txt",
+					"1_abc.txt",
+					"035_b.txt",
+					"1234abc.txt",
+					"036_c.txt",
+				}),
+				10,
+				3,
+			},
+			false,
+			[]testRename{
+				{"034_a.txt", "010_a.txt"},
+				{"035_b.txt", "020_b.txt"},
+				{"036_c.txt", "030_c.txt"},
+			},
+		},
+		{
+			"longer input digits",
+			args{
+				makeTestFiler([]string{
+					"034_a.txt",
+					"035_b.txt",
+					"1036_c.txt",
+				}),
+				10,
+				3,
+			},
+			false,
+			[]testRename{
+				{"034_a.txt", "010_a.txt"},
+				{"035_b.txt", "020_b.txt"},
+				{"1036_c.txt", "030_c.txt"},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -107,6 +146,55 @@ func Test_createFormatString(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := createFormatString(tt.args.size); got != tt.want {
 				t.Errorf("createFormatString() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_fileBase(t *testing.T) {
+	type args struct {
+		s    string
+		size int
+	}
+	tests := []struct {
+		name     string
+		args     args
+		wantBase string
+		wantOk   bool
+	}{
+		{
+			"simple base",
+			args{"000_abc.txt", 3},
+			"abc.txt",
+			true,
+		},
+		{
+			"simple base",
+			args{"00000_abc.txt", 3},
+			"abc.txt",
+			true,
+		},
+		{
+			"no digits",
+			args{"abc.txt", 3},
+			"abc.txt",
+			false,
+		},
+		{
+			"not enough digits",
+			args{"00_abc.txt", 3},
+			"00_abc.txt",
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotBase, gotOk := fileBase(tt.args.s, tt.args.size)
+			if gotBase != tt.wantBase {
+				t.Errorf("fileBase() gotBase = %v, want %v", gotBase, tt.wantBase)
+			}
+			if gotOk != tt.wantOk {
+				t.Errorf("fileBase() gotOk = %v, want %v", gotOk, tt.wantOk)
 			}
 		})
 	}
