@@ -1,3 +1,5 @@
+[![Build Status]](https://api.cirrus-ci.com/github/as27/reorder.svg)
+
 # reorder
 Renames ordered file and folder names
 
