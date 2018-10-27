@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func Test2Run(t *testing.T) {
+func TestRun(t *testing.T) {
 	type args struct {
 		f    *testFiler
 		gap  int
@@ -76,4 +76,38 @@ func (tf *testFiler) Rename(old, new string) error {
 	}
 	tf.renames = append(tf.renames, testRename{old, new})
 	return nil
+}
+
+func Test_createFormatString(t *testing.T) {
+	type args struct {
+		size int
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			"2",
+			args{2},
+			"%02d_%s",
+		},
+		{
+			"3",
+			args{3},
+			"%03d_%s",
+		},
+		{
+			"4",
+			args{4},
+			"%04d_%s",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := createFormatString(tt.args.size); got != tt.want {
+				t.Errorf("createFormatString() = %v, want %v", got, tt.want)
+			}
+		})
+	}
 }
