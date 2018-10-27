@@ -19,5 +19,6 @@ func main() {
 	if *flagVersion {
 		fmt.Printf("reorder version: %s\n", version)
 	}
+
 	fmt.Printf("%#v\n", os.Args)
 }
