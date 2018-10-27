@@ -6,21 +6,29 @@ import (
 	"testing"
 )
 
-func TestRun(t *testing.T) {
-
+func Test2Run(t *testing.T) {
+	type args struct {
+		f    *testFiler
+		gap  int
+		size int
+	}
 	tests := []struct {
 		name    string
-		f       *testFiler
+		args    args
 		wantErr bool
 		renames []testRename
 	}{
 		{
 			"simple case",
-			makeTestFiler([]string{
-				"034_a.txt",
-				"035_b.txt",
-				"036_c.txt",
-			}),
+			args{
+				makeTestFiler([]string{
+					"034_a.txt",
+					"035_b.txt",
+					"036_c.txt",
+				}),
+				10,
+				3,
+			},
 			false,
 			[]testRename{
 				{"034_a.txt", "010_a.txt"},
@@ -31,11 +39,11 @@ func TestRun(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := Run(tt.f)
+			err := Run(tt.args.f, tt.args.gap, tt.args.size)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Run() error = %v, wantErr %v", err, tt.wantErr)
 			}
-			got := tt.f.renames
+			got := tt.args.f.renames
 			if !reflect.DeepEqual(got, tt.renames) {
 				t.Errorf("Renames = %v, want %v", got, tt.renames)
 			}

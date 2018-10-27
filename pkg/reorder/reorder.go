@@ -7,6 +7,10 @@ type Filer interface {
 }
 
 // Run the reorder action using a filer
-func Run(f Filer) error {
+func Run(f Filer, gap, size int) error {
+	fs := f.GetFiles()
+	for _, ff := range fs {
+		f.Rename(ff, ff)
+	}
 	return nil
 }
