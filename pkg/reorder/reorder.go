@@ -1,3 +1,9 @@
+/*
+Package reorder is for reordering a set of elements. This could
+be files or folders. The elements have to start with digits.
+The size of the reorder defines the minum of the digits of the
+element.
+*/
 package reorder
 
 import (
@@ -9,13 +15,13 @@ import (
 
 // Filer is used to abstract the file actions
 type Filer interface {
-	GetFiles() []string // GetFiles returns the filepaths in a slice
+	GetElements() []string // GetElements returns files or folder
 	Rename(old, new string) error
 }
 
 // Run the reorder action using a filer
 func Run(f Filer, gap, size int) error {
-	fs := f.GetFiles()
+	fs := f.GetElements()
 	format := createFormatString(size)
 	i := 1
 	for _, ff := range fs {
