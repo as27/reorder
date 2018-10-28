@@ -37,7 +37,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	// the currend wd can be changed with the first arg
+	// the current wd can be changed with the first arg
 	if len(args) > 0 {
 		wd, err = filepath.Abs(args[0])
 		if err != nil {
