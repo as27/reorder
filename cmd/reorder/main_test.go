@@ -50,7 +50,7 @@ func Test_main(t *testing.T) {
 			checkDir(t, tmpDir, tt.inFiles, true)
 			createFolders(tmpDir, tt.inFolders)
 			checkDir(t, tmpDir, tt.inFolders, false)
-			os.Args[1] = tmpDir
+			args = []string{tmpDir}
 			*flagGap = tt.flags.gap
 			*flagSize = tt.flags.size
 			*flagMinSize = tt.flags.minSize

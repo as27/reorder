@@ -20,8 +20,11 @@ var (
 	flagVersion = flag.Bool("version", false, "prints the version")
 )
 
+var args []string
+
 func init() {
 	flag.Parse()
+	args = flag.Args()
 }
 func main() {
 	if *flagVersion {
@@ -33,9 +36,10 @@ func main() {
 		fmt.Fprintln(os.Stderr, "error getting working directory")
 		os.Exit(1)
 	}
+
 	// the currend wd can be changed with the first arg
-	if len(os.Args) > 1 {
-		wd, err = filepath.Abs(os.Args[1])
+	if len(args) > 0 {
+		wd, err = filepath.Abs(args[0])
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "error getting the abs path of ", os.Args[1])
 			os.Exit(1)
