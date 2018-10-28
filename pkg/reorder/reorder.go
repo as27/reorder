@@ -20,12 +20,12 @@ type Filer interface {
 }
 
 // Run the reorder action using a filer
-func Run(f Filer, gap, size int) error {
+func Run(f Filer, gap, size, minSize int) error {
 	fs := f.GetElements()
 	format := createFormatString(size)
 	i := 1
 	for _, ff := range fs {
-		base, ok := fileBase(ff, size)
+		base, ok := fileBase(ff, minSize)
 		if !ok {
 			// just ignore files, which do not match the
 			// digit logic
