@@ -8,9 +8,10 @@ import (
 
 func TestRun(t *testing.T) {
 	type args struct {
-		f    *testFiler
-		gap  int
-		size int
+		f       *testFiler
+		gap     int
+		size    int
+		minSize int
 	}
 	tests := []struct {
 		name    string
@@ -27,6 +28,7 @@ func TestRun(t *testing.T) {
 					"036_c.txt",
 				}),
 				10,
+				3,
 				3,
 			},
 			false,
@@ -49,6 +51,7 @@ func TestRun(t *testing.T) {
 				}),
 				10,
 				3,
+				3,
 			},
 			false,
 			[]testRename{
@@ -67,12 +70,51 @@ func TestRun(t *testing.T) {
 				}),
 				10,
 				3,
+				3,
 			},
 			false,
 			[]testRename{
 				{"034_a.txt", "010_a.txt"},
 				{"035_b.txt", "020_b.txt"},
 				{"1036_c.txt", "030_c.txt"},
+			},
+		},
+		{
+			"enlarge digits",
+			args{
+				makeTestFiler([]string{
+					"034_a.txt",
+					"035_b.txt",
+					"1036_c.txt",
+				}),
+				10,
+				4,
+				3,
+			},
+			false,
+			[]testRename{
+				{"034_a.txt", "0010_a.txt"},
+				{"035_b.txt", "0020_b.txt"},
+				{"1036_c.txt", "0030_c.txt"},
+			},
+		},
+		{
+			"shorten digits",
+			args{
+				makeTestFiler([]string{
+					"034_a.txt",
+					"035_b.txt",
+					"036_c.txt",
+				}),
+				5,
+				2,
+				3,
+			},
+			false,
+			[]testRename{
+				{"034_a.txt", "05_a.txt"},
+				{"035_b.txt", "10_b.txt"},
+				{"036_c.txt", "15_c.txt"},
 			},
 		},
 		{
@@ -85,6 +127,7 @@ func TestRun(t *testing.T) {
 				}),
 				10,
 				3,
+				3,
 			},
 			false,
 			[]testRename{
@@ -96,7 +139,7 @@ func TestRun(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := Run(tt.args.f, tt.args.gap, tt.args.size)
+			err := Run(tt.args.f, tt.args.gap, tt.args.size, tt.args.minSize)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Run() error = %v, wantErr %v", err, tt.wantErr)
 			}

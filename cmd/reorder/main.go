@@ -11,11 +11,12 @@ import (
 	"github.com/as27/reorder/pkg/reorder/fs"
 )
 
-const version = "0.9.0"
+const version = "0.9.1"
 
 var (
 	flagGap     = flag.Int("gap", 10, "define the gap between the order numbers")
 	flagSize    = flag.Int("size", 3, "Number of the digits used 000 <- 3")
+	flagMinSize = flag.Int("min", 3, "minimum Number of the digits of the names")
 	flagVersion = flag.Bool("version", false, "prints the version")
 )
 
