@@ -20,8 +20,10 @@ var (
 	flagVersion = flag.Bool("version", false, "prints the version")
 )
 
-func main() {
+func init() {
 	flag.Parse()
+}
+func main() {
 	if *flagVersion {
 		fmt.Printf("reorder version: %s\n", version)
 		os.Exit(0)
@@ -46,8 +48,8 @@ func main() {
 	}
 	folders := fs.NewFiler(wd, fs.FolderMode)
 	log.Println("Reordering folders")
-	reorder.Run(folders, *flagGap, *flagSize)
+	reorder.Run(folders, *flagGap, *flagSize, *flagMinSize)
 	files := fs.NewFiler(wd, fs.FileMode)
 	log.Println("Reordering files")
-	reorder.Run(files, *flagGap, *flagSize)
+	reorder.Run(files, *flagGap, *flagSize, *flagMinSize)
 }
