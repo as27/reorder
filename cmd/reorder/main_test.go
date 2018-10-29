@@ -38,6 +38,14 @@ func Test_main(t *testing.T) {
 			[]string{"0010_file1", "0020_file2", "abc", "1_dd"},
 			[]string{"0010_folder1", "0020_folder2"},
 		},
+		{
+			"default values",
+			flags{10, 3, 3},
+			[]string{"00011_file11", "002_file2", "001_file1"},
+			[]string{"011_folder1", "012_folder2"},
+			[]string{"010_file1", "020_file2", "030_file11"},
+			[]string{"010_folder1", "020_folder2"},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -50,7 +58,7 @@ func Test_main(t *testing.T) {
 			checkDir(t, tmpDir, tt.inFiles, true)
 			createFolders(tmpDir, tt.inFolders)
 			checkDir(t, tmpDir, tt.inFolders, false)
-			os.Args[1] = tmpDir
+			args = []string{tmpDir}
 			*flagGap = tt.flags.gap
 			*flagSize = tt.flags.size
 			*flagMinSize = tt.flags.minSize

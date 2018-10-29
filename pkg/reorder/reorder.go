@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strconv"
 )
 
@@ -22,6 +23,7 @@ type Filer interface {
 // Run the reorder action using a filer
 func Run(f Filer, gap, size, minSize int) error {
 	fs := f.GetElements()
+	sort.Sort(elements(fs))
 	format := createFormatString(size)
 	i := 1
 	for _, ff := range fs {
@@ -53,4 +55,27 @@ func fileBase(s string, size int) (base string, ok bool) {
 		return s, false
 	}
 	return s[i[1]:], true
+}
+
+func fileNumber(s string) int {
+	s = filepath.Base(s)
+	re := regexp.MustCompile("\\d{1,}")
+	i := re.FindStringIndex(s)
+	if i == nil {
+		return 0
+	}
+	number, err := strconv.Atoi(s[:i[1]])
+	if err != nil {
+		return 0
+	}
+	return number
+}
+
+// elements is used to implement the sorter interface
+type elements []string
+
+func (e elements) Len() int      { return len(e) }
+func (e elements) Swap(i, j int) { e[i], e[j] = e[j], e[i] }
+func (e elements) Less(i, j int) bool {
+	return fileNumber(e[i]) < fileNumber(e[j])
 }

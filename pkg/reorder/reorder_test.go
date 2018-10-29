@@ -24,6 +24,7 @@ func TestRun(t *testing.T) {
 			args{
 				makeTestFiler([]string{
 					"034_a.txt",
+					"001_aa.txt",
 					"035_b.txt",
 					"036_c.txt",
 				}),
@@ -33,9 +34,10 @@ func TestRun(t *testing.T) {
 			},
 			false,
 			[]testRename{
-				{"034_a.txt", "010_a.txt"},
-				{"035_b.txt", "020_b.txt"},
-				{"036_c.txt", "030_c.txt"},
+				{"001_aa.txt", "010_aa.txt"},
+				{"034_a.txt", "020_a.txt"},
+				{"035_b.txt", "030_b.txt"},
+				{"036_c.txt", "040_c.txt"},
 			},
 		},
 		{
@@ -257,6 +259,42 @@ func Test_fileBase(t *testing.T) {
 			if gotOk != tt.wantOk {
 				t.Errorf("fileBase() gotOk = %v, want %v", gotOk, tt.wantOk)
 			}
+		})
+	}
+}
+
+func Test_fileNumber(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name       string
+		args       args
+		wantNumber int
+	}{
+		{
+			"1",
+			args{"001_abc"},
+			1,
+		},
+		{
+			"10",
+			args{"0000000010_abc"},
+			10,
+		},
+		{
+			"no number",
+			args{"abc"},
+			0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotNumber := fileNumber(tt.args.s)
+			if gotNumber != tt.wantNumber {
+				t.Errorf("fileNumber() gotNumber = %v, want %v", gotNumber, tt.wantNumber)
+			}
+
 		})
 	}
 }
