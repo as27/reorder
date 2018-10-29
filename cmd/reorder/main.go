@@ -11,7 +11,7 @@ import (
 	"github.com/as27/reorder/pkg/reorder/fs"
 )
 
-const version = "0.9.1"
+const version = "0.9.2"
 
 var (
 	flagGap     = flag.Int("gap", 10, "define the gap between the order numbers")
