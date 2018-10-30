@@ -1,4 +1,4 @@
-![Build Status](https://api.cirrus-ci.com/github/as27/reorder.svg)
+![Build Status](https://api.cirrus-ci.com/github/as27/reorder.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/as27/reorder)](https://goreportcard.com/report/github.com/as27/reorder)
 
 # reorder
 Renames ordered file and folder names
